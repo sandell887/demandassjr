@@ -295,8 +295,8 @@ window.DEMANDAS = [
     "area_m2": 825,
     "preco_total": null,
     "observacao": null,
-    "lat": null,
-    "lng": null,
+    "lat": -2.521408,
+    "lng": -44.207474,
     "endereco_consulta": "Rua P, Terra livre/ Canudos, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20P%2C%20Terra%20livre/%20Canudos%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -310,8 +310,8 @@ window.DEMANDAS = [
     "area_m2": 660,
     "preco_total": null,
     "observacao": null,
-    "lat": null,
-    "lng": null,
+    "lat": -2.520093,
+    "lng": -44.207820,
     "endereco_consulta": "Rua Q, Terra livre/ Canudos, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20Q%2C%20Terra%20livre/%20Canudos%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
