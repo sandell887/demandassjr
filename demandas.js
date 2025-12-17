@@ -145,8 +145,8 @@ window.DEMANDAS = [
     "area_m2": 450,
     "preco_total": null,
     "observacao": "Material no local, Falta Mao de Obra",
-    "lat": -2.5512,
-    "lng": -44.1785,
+    "lat": -2.5397757,
+    "lng": -44.1915914,
     "endereco_consulta": "Rua da Pedreira, Trizidela, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20da%20Pedreira%2C%20Trizidela%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -175,8 +175,8 @@ window.DEMANDAS = [
     "area_m2": 6600,
     "preco_total": null,
     "observacao": null,
-    "lat": -2.5385,
-    "lng": -44.1482,
+    "lat": -2.5109509,
+    "lng": -44.1837996,
     "endereco_consulta": "Av.Alonso Araujo, Maioba do Jenipapeiro, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Av.Alonso%20Araujo%2C%20Maioba%20do%20Jenipapeiro%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -190,8 +190,8 @@ window.DEMANDAS = [
     "area_m2": 5960.5,
     "preco_total": null,
     "observacao": null,
-    "lat": -2.4815,
-    "lng": -44.1905,
+    "lat": -2.491123,
+    "lng": -44.199266,
     "endereco_consulta": "Rua Araripina, Parque Araçagy / Miritiua, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20Araripina%2C%20Parque%20Ara%C3%A7agy%20/%20Miritiua%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -220,8 +220,8 @@ window.DEMANDAS = [
     "area_m2": 12660,
     "preco_total": null,
     "observacao": null,
-    "lat": null,
-    "lng": null,
+    "lat": -2.4896233,
+    "lng": -44.2048922,
     "endereco_consulta": "Rua da Mangueira, Parque das Palmeiras, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20da%20Mangueira%2C%20Parque%20das%20Palmeiras%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
