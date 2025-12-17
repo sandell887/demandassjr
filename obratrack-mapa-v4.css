@@ -11,7 +11,7 @@
   --gap:10px;
   --pad:10px;
 
-  /* alturas mínimas p/ evitar corte nos gráficos */
+  /* alturas mínimas p/ evitar corte nos gráficos (desktop) */
   --chart-min:220px;
   --chart-min-serv:300px;
 }
@@ -29,8 +29,8 @@ html,body{
     linear-gradient(to bottom, #020617, #020617);
 }
 
-/* ✅ Por padrão: tela “sem rolagem” (desktop).
-   Em alturas pequenas liberamos scroll para não cortar nada. */
+/* ✅ Desktop: tela “sem rolagem”.
+   Mobile: a gente libera scroll por media query (mais abaixo). */
 body{
   height:100vh;
   overflow:hidden;
@@ -103,21 +103,6 @@ main{
 .kpi-value{ font-size:16px; font-weight:800; line-height:1.1; }
 .kpi-foot{ font-size:10px; color:var(--muted); }
 
-/* Em telas menores: KPIs viram faixa horizontal */
-@media (max-width:980px){
-  .top-grid{
-    grid-auto-flow:column;
-    grid-auto-columns:minmax(170px, 1fr);
-    grid-template-columns:none;
-    overflow-x:auto;
-    padding-bottom:2px;
-    scrollbar-width:thin;
-    scrollbar-color:var(--scroll) transparent;
-  }
-  .top-grid::-webkit-scrollbar{ height:6px; }
-  .top-grid::-webkit-scrollbar-thumb{ background:var(--scroll); border-radius:999px; }
-}
-
 /* ===== Layout principal: mapa esquerda, direita ===== */
 .layout{
   flex:1;
@@ -127,14 +112,6 @@ main{
   gap:var(--gap);
   align-items:stretch;
   overflow:hidden;
-}
-
-@media (max-width:980px){
-  .layout{
-    grid-template-columns:1fr;
-    /* ✅ garante espaço para não esmagar os charts */
-    grid-template-rows:minmax(420px, 1fr) minmax(560px, 1fr);
-  }
 }
 
 /* ===== Card base ===== */
@@ -200,7 +177,7 @@ main{
   flex-direction:column;
   gap:var(--gap);
   min-height:0;
-  overflow:hidden; /* sem “vazar” */
+  overflow:hidden; /* desktop */
 }
 
 /* ===== Charts ===== */
@@ -211,15 +188,12 @@ main{
   line-height:1.2;
 }
 
-/* o card dos gráficos cresce e não “corta” */
 .right-col > section.card-pane:first-child{
   flex:1;
   min-height:0;
 }
 
-/* ✅ aqui é onde resolve o corte:
-   - damos MIN HEIGHT real
-   - e se o espaço apertar, rola AQUI dentro (não corta) */
+/* Desktop: grid 2+1 com scroll interno */
 .charts-body{
   flex:1;
   min-height:0;
@@ -237,14 +211,6 @@ main{
 .charts-body::-webkit-scrollbar{ width:8px; height:8px; }
 .charts-body::-webkit-scrollbar-thumb{ background:var(--scroll); border-radius:999px; }
 
-@media (max-width:980px){
-  .charts-body{
-    grid-template-columns:1fr;
-    grid-template-rows:repeat(3, minmax(var(--chart-min), 1fr));
-  }
-}
-
-/* cards internos */
 .chart-card{
   background: rgba(255,255,255,.03);
   border: 1px solid rgba(255,255,255,.07);
@@ -256,12 +222,8 @@ main{
   min-height:0;
 }
 
-/* Serviço ocupa a linha inteira (desktop) */
 .charts-body .chart-card:not(.half){
   grid-column:1 / -1;
-}
-@media (max-width:980px){
-  .charts-body .chart-card:not(.half){ grid-column:auto; }
 }
 
 .chart-title{
@@ -282,20 +244,17 @@ main{
   font-weight:600;
 }
 
-/* ✅ o ECharts precisa de altura real: height + min-height */
 .chart{
   flex:1 1 auto;
   min-height:var(--chart-min);
   width:100%;
   height:100%;
 }
-
-/* donut com mais área */
 #chartServico{
   min-height:var(--chart-min-serv);
 }
 
-/* ===== Lista (se estiver ativa) ===== */
+/* ===== Lista ===== */
 .filter-row{
   padding:10px;
   border-bottom:1px solid var(--border);
@@ -333,6 +292,7 @@ main{
   flex:1;
   min-height:0;
   overflow:auto;
+  -webkit-overflow-scrolling:touch;
 }
 .list-body table{
   width:100%;
@@ -358,16 +318,99 @@ main{
   background:rgba(56,189,248,.06);
 }
 
-/* ===== Ajustes finos mobile ===== */
-@media (max-width:520px){
-  header{ padding:10px 12px; }
-  .brand-text-sub{ max-width:46vw; }
-  .pane-sub{ display:none; }
-  .hint{ display:none; }
-  .filter-row > div{ min-width:140px; }
+/* =========================================================
+   ✅ MOBILE “de verdade”: mesma estética, só que sem travar
+   ========================================================= */
+@media (max-width:980px){
+  /* libera rolagem da página (evita layout esmagado) */
+  body{
+    height:auto;
+    min-height:100dvh;
+    overflow:auto;
+  }
+  main{
+    height:auto;
+    min-height:calc(100dvh - var(--header-h));
+    overflow:visible;
+  }
+
+  /* KPIs iguais (sem carrossel): 2x2 */
+  .top-grid{
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    overflow:visible;
+  }
+
+  /* Layout vira coluna, com alturas “boas” */
+  .layout{
+    display:flex;
+    flex-direction:column;
+    overflow:visible;
+  }
+
+  /* MAPA com altura bonita no celular */
+  .layout > .card-pane:first-child #map{
+    height:56dvh;
+    min-height:340px;
+  }
+
+  /* direita deixa crescer */
+  .right-col{
+    overflow:visible;
+  }
+  .right-col > section.card-pane:first-child{
+    flex:unset;
+  }
+
+  /* Charts sem scroll interno (evita “apertado” no mobile) */
+  .charts-body{
+    display:flex;
+    flex-direction:column;
+    overflow:visible;
+    padding-bottom:12px;
+  }
+
+  /* alturas mais “Power BI” no celular */
+  .chart{
+    min-height:clamp(220px, 34dvh, 360px);
+  }
+  #chartServico{
+    min-height:clamp(260px, 40dvh, 420px);
+  }
+
+  /* Lista: mantém scroll só na tabela (normal no mobile) */
+  .list-body{
+    overflow:auto;
+  }
+  .list-body table{
+    min-width:820px; /* evita esmagar colunas (rola pro lado só na tabela) */
+  }
 }
 
-/* ===== Altura baixa: libera scroll da página para não cortar nada ===== */
+/* ===== Ajustes finos mobile pequeno ===== */
+@media (max-width:520px){
+  :root{
+    --pad:8px;
+    --gap:8px;
+  }
+
+  header{ padding:10px 12px; }
+  .brand-text-sub{ max-width:46vw; }
+
+  .pane-sub{ display:none; }
+  .hint{ display:none; }
+
+  /* filtros em 1 coluna, mais fácil no celular */
+  .filter-row{ gap:8px; }
+  .filter-row > div{ min-width:0; flex:1 1 100%; }
+
+  /* mapa um pouco menor em telas bem pequenas */
+  .layout > .card-pane:first-child #map{
+    height:52dvh;
+    min-height:300px;
+  }
+}
+
+/* ===== Altura baixa: ainda garante scroll ===== */
 @media (max-height:760px){
   body{ overflow:auto; }
   main{
@@ -377,5 +420,4 @@ main{
   }
   .layout{ overflow:visible; }
   .right-col{ overflow:visible; }
-  .charts-body{ overflow:auto; }
 }
