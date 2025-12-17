@@ -1030,8 +1030,8 @@ window.DEMANDAS = [
     "area_m2": 1375,
     "preco_total": null,
     "observacao": null,
-    "lat": -2.5658,
-    "lng": -44.2018,
+    "lat": -2.5828099,
+    "lng": -44.1674245,
     "endereco_consulta": "Rua das Palmeiras, Residencial Piquezeiro/ Cedro, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20das%20Palmeiras%2C%20Residencial%20Piquezeiro/%20Cedro%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
