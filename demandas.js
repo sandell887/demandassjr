@@ -235,8 +235,8 @@ window.DEMANDAS = [
     "area_m2": 14000,
     "preco_total": null,
     "observacao": null,
-    "lat": null,
-    "lng": null,
+    "lat": -2.5078397,
+    "lng": -44.1808098,
     "endereco_consulta": "Av.Carlos Augusto, Parque Jair, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Av.Carlos%20Augusto%2C%20Parque%20Jair%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -265,8 +265,8 @@ window.DEMANDAS = [
     "area_m2": 2475,
     "preco_total": null,
     "observacao": null,
-    "lat": -2.5605,
-    "lng": -44.1945,
+    "lat": -2.521132,
+    "lng": -44.209115,
     "endereco_consulta": "Rua Cheguevara, Terra livre/ Canudos, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20Cheguevara%2C%20Terra%20livre/%20Canudos%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -280,8 +280,8 @@ window.DEMANDAS = [
     "area_m2": 825,
     "preco_total": null,
     "observacao": null,
-    "lat": null,
-    "lng": null,
+    "lat": -2.520872,
+    "lng":  -44.207092,
     "endereco_consulta": "Rua O, Terra livre/ Canudos, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20O%2C%20Terra%20livre/%20Canudos%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
