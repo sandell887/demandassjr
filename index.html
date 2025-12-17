@@ -67,6 +67,7 @@
           <button class="btn" id="btnModoMarcar">📌 Definir coordenada</button>
           <button class="btn" id="btnRemoverCoord">🗑️ Remover coord</button>
           <button class="btn" id="btnExportar">⬇️ Exportar coords-manual.js</button>
+          <button class="btn" id="btnCentralizar">🎯 Centralizar SJR</button>
         </div>
       </div>
       <div id="map"></div>
@@ -167,17 +168,15 @@
 <script>
 (function(){
   try{
-    // OBS: "map" é um binding global (const) criado no seu JS do mapa
     if (typeof map === 'undefined' || !window.L) return;
 
-    // Remove o tile padrão que o JS adiciona (OSM), pra não ficar duplicado
+    // Remove tile layers já adicionadas pelo JS (pra não duplicar)
     const toRemove = [];
     map.eachLayer((layer) => {
       if (layer && (layer instanceof L.TileLayer)) toRemove.push(layer);
     });
     toRemove.forEach((l) => map.removeLayer(l));
 
-    // Base layers
     const baseMapa = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; OpenStreetMap'
@@ -185,16 +184,11 @@
 
     const baseSatelite = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      {
-        maxZoom: 19,
-        attribution: 'Tiles &copy; Esri'
-      }
+      { maxZoom: 19, attribution: 'Tiles &copy; Esri' }
     );
 
-    // Começa no "Mapa"
     baseMapa.addTo(map);
 
-    // Controle
     const collapsed = window.matchMedia && window.matchMedia('(max-width: 720px)').matches;
     L.control.layers(
       { 'Mapa': baseMapa, 'Satélite': baseSatelite },
@@ -205,6 +199,27 @@
   } catch (e) {
     console.warn('Falha ao ativar Satélite:', e);
   }
+})();
+</script>
+
+<!-- ✅ Centralizar SJR -->
+<script>
+(function(){
+  const btn = document.getElementById('btnCentralizar');
+  if(!btn) return;
+
+  btn.addEventListener('click', () => {
+    try{
+      if (typeof map === 'undefined') return;
+      // usa o centro do seu JS (SJ_RIBAMAR_CENTER) se existir, senão um fallback
+      const c = (typeof SJ_RIBAMAR_CENTER !== 'undefined' && Array.isArray(SJ_RIBAMAR_CENTER))
+        ? SJ_RIBAMAR_CENTER
+        : [-2.55, -44.07];
+      map.flyTo(c, 12, { animate:true, duration:0.8 });
+    }catch(e){
+      console.warn('Centralizar falhou:', e);
+    }
+  });
 })();
 </script>
 
@@ -283,8 +298,19 @@
     }
 
     const base = window.DEMANDAS;
-    const data = applyUIFilters(base);
-    $('pillCharts').textContent = `${data.length} itens (filtrados)`;
+
+    // ✅ filtros da UI
+    let data = applyUIFilters(base);
+
+    // ✅ foco por demanda (quando clicar no mapa/lista)
+    const focus = window.__obratChartsFocusItem;
+    if(focus != null && focus !== ''){
+      const fnum = Number(focus);
+      data = data.filter(d => Number(d.item) === fnum);
+      $('pillCharts').textContent = `${data.length} item (foco #${fnum})`;
+    } else {
+      $('pillCharts').textContent = `${data.length} itens (filtrados)`;
+    }
 
     const tc = textColor();
 
@@ -313,10 +339,7 @@
       xAxis:{
         type:'category',
         data: baiData.map(x=>x[0]),
-        axisLabel:{
-          rotate: 30,
-          formatter:(v)=> shortLabel(v, 14)
-        }
+        axisLabel:{ rotate: 30, formatter:(v)=> shortLabel(v, 14) }
       },
       yAxis:{ type:'value' },
       dataZoom:[{ type:'inside' }, { type:'slider', bottom: 6, height: 12, showDetail:false }],
@@ -386,14 +409,7 @@
           return `${p.name}<br/>${fmtM(v)} • ${fmtKm(v)}<br/>${p.percent}% do total`;
         }
       },
-      legend:{
-        top: 6,
-        left: 10,
-        right: 10,
-        type:'scroll',
-        textStyle:{ color: tc },
-        formatter:(name)=> name
-      },
+      legend:{ top: 6, left: 10, right: 10, type:'scroll', textStyle:{ color: tc } },
       graphic: [{
         type: 'text',
         left: 'center',
@@ -409,12 +425,7 @@
         type:'pie',
         radius:['40%','70%'],
         center:['50%','60%'],
-        avoidLabelOverlap:true,
-        label:{
-          color: tc,
-          fontSize: 11,
-          formatter:(p)=> `${p.name}: ${fmtKm(p.value)}`
-        },
+        label:{ color: tc, fontSize: 11, formatter:(p)=> `${p.name}: ${fmtKm(p.value)}` },
         labelLine:{ length:10, length2:8 },
         data: pieData
       }],
@@ -430,6 +441,8 @@
       const sel = $('filterRegiao');
       if(!sel) return;
       sel.value = p.name === '—' ? '' : p.name;
+      // ao filtrar por região, limpa foco
+      window.__obratChartsFocusItem = null;
       sel.dispatchEvent(new Event('change', { bubbles:true }));
       updateCharts();
     });
@@ -439,6 +452,7 @@
       const inp = $('filterBairro');
       if(!inp) return;
       inp.value = p.name === '—' ? '' : p.name;
+      window.__obratChartsFocusItem = null;
       inp.dispatchEvent(new Event('input', { bubbles:true }));
       updateCharts();
     });
@@ -448,15 +462,19 @@
     ['filterRegiao','filterBairro','filterLogradouro'].forEach(id=>{
       const el = $(id);
       if(!el) return;
-      el.addEventListener('change', updateCharts);
-      el.addEventListener('input', updateCharts);
+      el.addEventListener('change', () => { window.__obratChartsFocusItem = null; updateCharts(); });
+      el.addEventListener('input',  () => { window.__obratChartsFocusItem = null; updateCharts(); });
     });
   }
 
+  // ✅ API global p/ mapa/lista focar uma demanda
+  window.__obratChartsFocusItem = null;
+  window.__obratChartsSetFocus = (item) => { window.__obratChartsFocusItem = (item==null?null:Number(item)); updateCharts(); };
+  window.__obratChartsClearFocus = () => { window.__obratChartsFocusItem = null; updateCharts(); };
+  window.__obratChartsUpdate = updateCharts;
+
   window.addEventListener('resize', () => {
-    chReg?.resize();
-    chBai?.resize();
-    chServ?.resize();
+    chReg?.resize(); chBai?.resize(); chServ?.resize();
   });
 
   window.addEventListener('load', () => {
@@ -464,6 +482,132 @@
     updateCharts();
     setTimeout(() => { ensureCharts(); bindClicks(); }, 80);
     setTimeout(() => { updateCharts(); ensureCharts(); bindClicks(); }, 400);
+  });
+})();
+</script>
+
+<!-- ✅ PATCH: filtro de Região também filtra os MARCADORES do mapa (Vilas/Sede/Limitrofe/etc) -->
+<script>
+(function(){
+  const fr = document.getElementById('filterRegiao');
+  const fb = document.getElementById('filterBairro');
+  const fl = document.getElementById('filterLogradouro');
+  const kpiGeo = document.getElementById('kpiGeo');
+  const pillResumo = document.getElementById('pillResumo');
+  const pillSel = document.getElementById('pillSel');
+
+  function norm(s){ return (s ?? '').toString().trim(); }
+  function lower(s){ return norm(s).toLowerCase(); }
+
+  function getFilteredList(){
+    const reg = norm(fr?.value);
+    const bairro = lower(fb?.value);
+    const logra  = lower(fl?.value);
+
+    const base = Array.isArray(window.DEMANDAS) ? window.DEMANDAS : [];
+    return base.filter(d => {
+      const okReg = !reg || norm(d.regiao) === reg;
+      const okBai = !bairro || lower(d.bairro).includes(bairro);
+      const okLog = !logra  || lower(d.logradouro).includes(logra);
+      return okReg && okBai && okLog;
+    });
+  }
+
+  function rebuildMarkersFrom(list){
+    try{
+      if (typeof map === 'undefined' || !window.L) return;
+      if (typeof clearAllMarkers !== 'function') return;
+      if (typeof getMarkerStyle !== 'function') return;
+      if (typeof buildPopupHtml !== 'function') return;
+      if (typeof markersByItem === 'undefined') return;
+
+      // limpa e recria só os filtrados
+      clearAllMarkers();
+
+      let count = 0;
+
+      list.forEach(d => {
+        if (typeof d?.lat !== 'number' || typeof d?.lng !== 'number') return;
+
+        const { color, emoji } = getMarkerStyle(d.servico);
+
+        const iconHtml = `
+          <div class="demanda-marker-wrapper" style="background:${color};">
+            <span>${emoji}</span>
+          </div>
+        `;
+
+        const icon = L.divIcon({
+          className:'',
+          html:iconHtml,
+          iconSize:[26,26],
+          iconAnchor:[13,13]
+        });
+
+        const marker = L.marker([d.lat, d.lng], { icon }).addTo(map);
+        marker.bindPopup(buildPopupHtml(d));
+
+        // copiar endereço (igual ao original)
+        marker.on("popupopen", (ev) => {
+          const el = ev.popup.getElement();
+          const btn = el?.querySelector("button[data-copy]");
+          if (btn) {
+            btn.addEventListener("click", async () => {
+              const text = btn.getAttribute("data-copy") || "";
+              try {
+                await navigator.clipboard.writeText(text);
+                btn.textContent = "✅ Copiado!";
+                setTimeout(()=> btn.textContent = "📋 Copiar endereço", 1200);
+              } catch {
+                alert("Não consegui copiar automaticamente. Copie manualmente:\n\n" + text);
+              }
+            }, { once:true });
+          }
+        });
+
+        // ✅ ao tocar no marcador: foca a demanda nos gráficos
+        marker.on("click", () => {
+          try{
+            if (typeof selectedItem !== 'undefined') selectedItem = d.item;
+            if (pillSel) pillSel.textContent = `Selecionada: #${d.item} — ${norm(d.logradouro) || '—'}`;
+            if (window.__obratChartsSetFocus) window.__obratChartsSetFocus(d.item);
+          }catch(e){}
+        });
+
+        markersByItem.set(d.item, marker);
+        count++;
+      });
+
+      if (kpiGeo) kpiGeo.textContent = String(count);
+    } catch(e){
+      console.warn('rebuildMarkersFrom falhou:', e);
+    }
+  }
+
+  function applyFiltersToMapAndList(){
+    const list = getFilteredList();
+
+    // atualiza lista (se existir)
+    if (typeof renderTable === 'function') {
+      renderTable(list);
+    } else if (pillResumo) {
+      pillResumo.textContent = `${list.length} demandas (filtradas)`;
+    }
+
+    // ✅ atualiza marcadores
+    rebuildMarkersFrom(list);
+
+    // ✅ atualiza gráficos (sem limpar os filtros)
+    if (window.__obratChartsUpdate) window.__obratChartsUpdate();
+  }
+
+  if(fr) fr.addEventListener('change', applyFiltersToMapAndList);
+  if(fb) fb.addEventListener('input',  applyFiltersToMapAndList);
+  if(fl) fl.addEventListener('input',  applyFiltersToMapAndList);
+
+  window.addEventListener('load', () => {
+    // garante que ao carregar, fica tudo sincronizado
+    setTimeout(applyFiltersToMapAndList, 120);
   });
 })();
 </script>
