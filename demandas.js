@@ -1405,8 +1405,8 @@ window.DEMANDAS = [
     "area_m2": 825,
     "preco_total": null,
     "observacao": null,
-    "lat": null,
-    "lng": null,
+    "lat": -2.5499717,
+    "lng": -44.0674171,
     "endereco_consulta": "Travessa Antônio Dino, Joao Cadal, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Travessa%20Ant%C3%B4nio%20Dino%2C%20Joao%20Cadal%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -1435,8 +1435,8 @@ window.DEMANDAS = [
     "area_m2": 1100,
     "preco_total": null,
     "observacao": null,
-    "lat": -2.5432,
-    "lng": -44.161,
+    "lat": -2.5514613,
+    "lng": -44.0846140,
     "endereco_consulta": "Rua Santa Maria, Vila dr Julinho, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20Santa%20Maria%2C%20Vila%20dr%20Julinho%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -1465,8 +1465,8 @@ window.DEMANDAS = [
     "area_m2": 1925,
     "preco_total": null,
     "observacao": null,
-    "lat": null,
-    "lng": null,
+    "lat": -2.5501229,
+    "lng": -44.0832558,
     "endereco_consulta": "Rua da paz, Vila dr Julinho, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20da%20paz%2C%20Vila%20dr%20Julinho%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -1510,8 +1510,8 @@ window.DEMANDAS = [
     "area_m2": 1375,
     "preco_total": null,
     "observacao": null,
-    "lat": null,
-    "lng": null,
+    "lat": -2.544807,
+    "lng": -44.080576,
     "endereco_consulta": "Rua São José, Roseana Sarney, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20S%C3%A3o%20Jos%C3%A9%2C%20Roseana%20Sarney%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
