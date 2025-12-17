@@ -55,8 +55,8 @@ window.DEMANDAS = [
     "area_m2": 2750,
     "preco_total": null,
     "observacao": null,
-    "lat": -2.5325,
-    "lng": -44.2201,
+    "lat": -2.514949,
+    "lng": -44.201873,
     "endereco_consulta": "Rua Senador Jose, Alto do Turú/ Recanto turu, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20Senador%20Jose%2C%20Alto%20do%20Tur%C3%BA/%20Recanto%20turu%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -70,8 +70,8 @@ window.DEMANDAS = [
     "area_m2": 2750,
     "preco_total": null,
     "observacao": null,
-    "lat": -2.533,
-    "lng": -44.221,
+    "lat": -2.5133781,
+    "lng": -44.1880940,
     "endereco_consulta": "Rua São Jose, Alto do Turú/ Recanto turu, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20S%C3%A3o%20Jose%2C%20Alto%20do%20Tur%C3%BA/%20Recanto%20turu%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -250,8 +250,8 @@ window.DEMANDAS = [
     "area_m2": 1650,
     "preco_total": null,
     "observacao": null,
-    "lat": -2.5542,
-    "lng": -44.2408,
+    "lat": -2.516545,
+    "lng": -44.209469,
     "endereco_consulta": "Rua Um (Rodão), Parque Vitória, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20Um%20%28Rod%C3%A3o%29%2C%20Parque%20Vit%C3%B3ria%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -1075,8 +1075,8 @@ window.DEMANDAS = [
     "area_m2": 2750,
     "preco_total": null,
     "observacao": null,
-    "lat": -2.562,
-    "lng": -44.075,
+    "lat":  -2.5558003,
+    "lng": -44.1127380,
     "endereco_consulta": "Rua Sete de Setembro, Pindaí, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20Sete%20de%20Setembro%2C%20Pinda%C3%AD%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
