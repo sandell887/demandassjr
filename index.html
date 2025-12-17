@@ -163,6 +163,51 @@
 <script src="demandas.js"></script>
 <script src="obratrack-mapa-manual-v4.js"></script>
 
+<!-- ✅ MODO SATÉLITE (Leaflet Layers Control) -->
+<script>
+(function(){
+  try{
+    // OBS: "map" é um binding global (const) criado no seu JS do mapa
+    if (typeof map === 'undefined' || !window.L) return;
+
+    // Remove o tile padrão que o JS adiciona (OSM), pra não ficar duplicado
+    const toRemove = [];
+    map.eachLayer((layer) => {
+      if (layer && (layer instanceof L.TileLayer)) toRemove.push(layer);
+    });
+    toRemove.forEach((l) => map.removeLayer(l));
+
+    // Base layers
+    const baseMapa = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap'
+    });
+
+    const baseSatelite = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      {
+        maxZoom: 19,
+        attribution: 'Tiles &copy; Esri'
+      }
+    );
+
+    // Começa no "Mapa"
+    baseMapa.addTo(map);
+
+    // Controle
+    const collapsed = window.matchMedia && window.matchMedia('(max-width: 720px)').matches;
+    L.control.layers(
+      { 'Mapa': baseMapa, 'Satélite': baseSatelite },
+      null,
+      { position: 'topright', collapsed }
+    ).addTo(map);
+
+  } catch (e) {
+    console.warn('Falha ao ativar Satélite:', e);
+  }
+})();
+</script>
+
 <!-- ✅ Script dos gráficos (ECharts) -->
 <script>
 (function(){
@@ -279,11 +324,7 @@
       toolbox:{ show:false }
     }, true);
 
-    // Distribuição por Pavimentação (m) — baseado nas colunas da planilha
-    // Regras:
-    // - Total: extensao_total_m
-    // - Asfáltica/Concreto/Bloquete: conforme tabela (mapas abaixo)
-    // - Não informado: Total - (Asfáltica + Concreto + Bloquete)
+    // Distribuição por Pavimentação (m)
     const BLOQUETE_M = {
       10: 90, 11: 250,
       52: 140, 55: 140,
@@ -292,12 +333,11 @@
       83: 170, 84: 180, 85: 350
     };
     const CONCRETO_M = { 1: 350 };
-    const ASFALTICA_OVERRIDE_M = { 50: 600, 51: 500 }; // casos em que o total não é todo asfalto
+    const ASFALTICA_OVERRIDE_M = { 50: 600, 51: 500 };
 
     function num(v){
       if(v == null) return 0;
       if(typeof v === 'number') return Number.isFinite(v) ? v : 0;
-      // aceita "1.234,56" / "1234,56" / "1234.56"
       const s = String(v).replace(/\s/g,'').replace(/\./g,'').replace(',', '.');
       const n = parseFloat(s);
       return Number.isFinite(n) ? n : 0;
@@ -382,7 +422,6 @@
     }, true);
   }
 
-  // Clique nos gráficos -> seta filtros existentes
   function bindClicks(){
     if(!chReg || !chBai) return;
 
