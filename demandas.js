@@ -145,8 +145,8 @@ window.DEMANDAS = [
     "area_m2": 450,
     "preco_total": null,
     "observacao": "Material no local, Falta Mao de Obra",
-    "lat": -2.5397757,
-    "lng": -44.1915914,
+    "lat": -2.538361,
+    "lng": -44.192049,
     "endereco_consulta": "Rua da Pedreira, Trizidela, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20da%20Pedreira%2C%20Trizidela%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -160,8 +160,8 @@ window.DEMANDAS = [
     "area_m2": 1375,
     "preco_total": null,
     "observacao": "Material no local, Falta Mao de Obra",
-    "lat": -2.5505,
-    "lng": -44.177,
+    "lat": -2.543611,
+    "lng": -44.193273,
     "endereco_consulta": "Rua Margaret, Trizidela, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20Margaret%2C%20Trizidela%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -325,8 +325,8 @@ window.DEMANDAS = [
     "area_m2": 660,
     "preco_total": null,
     "observacao": null,
-    "lat": null,
-    "lng": null,
+    "lat": -2.519614,
+    "lng": -44.206743,
     "endereco_consulta": "Rua R, Terra livre/ Canudos, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20R%2C%20Terra%20livre/%20Canudos%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -775,8 +775,8 @@ window.DEMANDAS = [
     "area_m2": 770,
     "preco_total": null,
     "observacao": null,
-    "lat": null,
-    "lng": null,
+    "lat": -2.562885,
+    "lng": -44.182927,
     "endereco_consulta": "Rua Paraíba, Vila São Luis, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20Para%C3%ADba%2C%20Vila%20S%C3%A3o%20Luis%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
