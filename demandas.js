@@ -415,8 +415,8 @@ window.DEMANDAS = [
     "area_m2": 6110,
     "preco_total": null,
     "observacao": null,
-    "lat": -2.531,
-    "lng": -44.1865,
+    "lat": -2.5573380,
+    "lng":  -44.2032516,
     "endereco_consulta": "Av.Maranguape, Maiobinha, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Av.Maranguape%2C%20Maiobinha%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -430,8 +430,8 @@ window.DEMANDAS = [
     "area_m2": 4320,
     "preco_total": null,
     "observacao": null,
-    "lat": -2.5321,
-    "lng": -44.1872,
+    "lat": -2.5573622,
+    "lng": -44.2032588,
     "endereco_consulta": "Rua da Granja, Maiobinha, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20da%20Granja%2C%20Maiobinha%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -445,8 +445,8 @@ window.DEMANDAS = [
     "area_m2": 1155,
     "preco_total": null,
     "observacao": null,
-    "lat": null,
-    "lng": null,
+    "lat":  -2.5551728,
+    "lng":  -44.1987959,
     "endereco_consulta": "Rua Claudio Licias, Maiobinha, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20Claudio%20Licias%2C%20Maiobinha%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
@@ -460,8 +460,8 @@ window.DEMANDAS = [
     "area_m2": 1072.5,
     "preco_total": null,
     "observacao": null,
-    "lat": null,
-    "lng": null,
+    "lat": -2.5588293,
+    "lng": -44.1973540,
     "endereco_consulta": "Rua da Macauba, Maiobinha, São José de Ribamar - MA, Brasil",
     "maps_url": "https://www.google.com/maps/search/?api=1&query=Rua%20da%20Macauba%2C%20Maiobinha%2C%20S%C3%A3o%20Jos%C3%A9%20de%20Ribamar%20-%20MA%2C%20Brasil"
   },
