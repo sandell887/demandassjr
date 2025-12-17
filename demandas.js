@@ -1607,5 +1607,151 @@ window.DEMANDAS = [
   }
 ];
 
-// deixa disponível globalmente para o seu script principal usar
-window.DEMANDAS = DEMANDAS;
+/* =========================================================
+   Atualização automática do campo "servico" (pela tabela)
+   - Define servico conforme: Asfáltica / Concreto / Bloquete
+   - (Opcional) também grava: extensao_asfaltica_m, extensao_concreto_m, extensao_bloquete_m
+   ========================================================= */
+
+(() => {
+  const LEN_BY_ITEM = {
+  1: { total: 1300, asf: 950, conc: 350, bloq: 0 },
+  2: { total: 150, asf: 150, conc: 0, bloq: 0 },
+  3: { total: 500, asf: 500, conc: 0, bloq: 0 },
+  4: { total: 500, asf: 500, conc: 0, bloq: 0 },
+  5: { total: 500, asf: 500, conc: 0, bloq: 0 },
+  6: { total: 500, asf: 500, conc: 0, bloq: 0 },
+  7: { total: 650, asf: 415, conc: 0, bloq: 235 },
+  8: { total: 1650, asf: 1650, conc: 0, bloq: 0 },
+  9: { total: 600, asf: 600, conc: 0, bloq: 0 },
+  10: { total: 90, asf: 0, conc: 0, bloq: 90 },
+  11: { total: 250, asf: 250, conc: 0, bloq: 0 },
+  12: { total: 1100, asf: 1100, conc: 0, bloq: 0 },
+  13: { total: 917, asf: 917, conc: 0, bloq: 0 },
+  14: { total: 2000, asf: 2000, conc: 0, bloq: 0 },
+  15: { total: 2110, asf: 2110, conc: 0, bloq: 0 },
+  16: { total: 2000, asf: 2000, conc: 0, bloq: 0 },
+  17: { total: 300, asf: 300, conc: 0, bloq: 0 },
+  18: { total: 450, asf: 450, conc: 0, bloq: 0 },
+  19: { total: 150, asf: 150, conc: 0, bloq: 0 },
+  20: { total: 150, asf: 150, conc: 0, bloq: 0 },
+  21: { total: 120, asf: 120, conc: 0, bloq: 0 },
+  22: { total: 120, asf: 0, conc: 0, bloq: 120 },
+  23: { total: 200, asf: 200, conc: 0, bloq: 0 },
+  24: { total: 500, asf: 500, conc: 0, bloq: 0 },
+  25: { total: 550, asf: 550, conc: 0, bloq: 0 },
+  26: { total: 600, asf: 600, conc: 0, bloq: 0 },
+  27: { total: 550, asf: 550, conc: 0, bloq: 0 },
+  28: { total: 940, asf: 940, conc: 0, bloq: 0 },
+  29: { total: 720, asf: 720, conc: 0, bloq: 0 },
+  30: { total: 210, asf: 210, conc: 0, bloq: 0 },
+  31: { total: 195, asf: 195, conc: 0, bloq: 0 },
+  32: { total: 200, asf: 200, conc: 0, bloq: 0 },
+  33: { total: 220, asf: 220, conc: 0, bloq: 0 },
+  34: { total: 200, asf: 200, conc: 0, bloq: 0 },
+  35: { total: 700, asf: 700, conc: 0, bloq: 0 },
+  36: { total: 80, asf: 0, conc: 0, bloq: 80 },
+  37: { total: 800, asf: 800, conc: 0, bloq: 0 },
+  38: { total: 1000, asf: 1000, conc: 0, bloq: 0 },
+  39: { total: 500, asf: 500, conc: 0, bloq: 0 },
+  40: { total: 500, asf: 500, conc: 0, bloq: 0 },
+  41: { total: 1000, asf: 1000, conc: 0, bloq: 0 },
+  42: { total: 1200, asf: 1200, conc: 0, bloq: 0 },
+  43: { total: 250, asf: 250, conc: 0, bloq: 0 },
+  44: { total: 300, asf: 300, conc: 0, bloq: 0 },
+  45: { total: 200, asf: 200, conc: 0, bloq: 0 },
+  46: { total: 1400, asf: 1400, conc: 0, bloq: 0 },
+  47: { total: 500, asf: 500, conc: 0, bloq: 0 },
+  48: { total: 700, asf: 700, conc: 0, bloq: 0 },
+  49: { total: 1600, asf: 1600, conc: 0, bloq: 0 },
+  50: { total: 1600, asf: 1600, conc: 0, bloq: 0 },
+  51: { total: 950, asf: 950, conc: 0, bloq: 0 },
+  52: { total: 140, asf: 0, conc: 0, bloq: 140 },
+  53: { total: 350, asf: 350, conc: 0, bloq: 0 },
+  54: { total: 450, asf: 450, conc: 0, bloq: 0 },
+  55: { total: 140, asf: 140, conc: 0, bloq: 0 },
+  56: { total: 500, asf: 500, conc: 0, bloq: 0 },
+  57: { total: 750, asf: 750, conc: 0, bloq: 0 },
+  58: { total: 1500, asf: 1500, conc: 0, bloq: 0 },
+  59: { total: 400, asf: 400, conc: 0, bloq: 0 },
+  60: { total: 1600, asf: 1600, conc: 0, bloq: 0 },
+  61: { total: 210, asf: 210, conc: 0, bloq: 0 },
+  62: { total: 200, asf: 200, conc: 0, bloq: 0 },
+  63: { total: 200, asf: 200, conc: 0, bloq: 0 },
+  64: { total: 250, asf: 250, conc: 0, bloq: 0 },
+  65: { total: 310, asf: 310, conc: 0, bloq: 0 },
+  66: { total: 1900, asf: 1900, conc: 0, bloq: 0 },
+  67: { total: 400, asf: 400, conc: 0, bloq: 0 },
+  68: { total: 500, asf: 0, conc: 0, bloq: 500 },
+  69: { total: 250, asf: 0, conc: 0, bloq: 250 },
+  70: { total: 250, asf: 0, conc: 0, bloq: 250 },
+  71: { total: 200, asf: 0, conc: 0, bloq: 200 },
+  72: { total: 500, asf: 500, conc: 0, bloq: 0 },
+  73: { total: 200, asf: 200, conc: 0, bloq: 0 },
+  74: { total: 1000, asf: 1000, conc: 0, bloq: 0 },
+  75: { total: 700, asf: 700, conc: 0, bloq: 0 },
+  76: { total: 450, asf: 450, conc: 0, bloq: 0 },
+  77: { total: 150, asf: 0, conc: 0, bloq: 150 },
+  78: { total: 240, asf: 0, conc: 0, bloq: 240 },
+  79: { total: 270, asf: 0, conc: 0, bloq: 270 },
+  80: { total: 100, asf: 0, conc: 0, bloq: 100 },
+  81: { total: 70, asf: 0, conc: 0, bloq: 70 },
+  82: { total: 600, asf: 600, conc: 0, bloq: 0 },
+  83: { total: 170, asf: 0, conc: 0, bloq: 170 },
+  84: { total: 180, asf: 0, conc: 0, bloq: 180 },
+  85: { total: 350, asf: 350, conc: 0, bloq: 0 },
+  86: { total: 0, asf: 0, conc: 0, bloq: 0 },
+  87: { total: 0, asf: 0, conc: 0, bloq: 0 },
+  88: { total: 100, asf: 0, conc: 0, bloq: 100 },
+  89: { total: 100, asf: 0, conc: 0, bloq: 100 },
+  90: { total: 120, asf: 0, conc: 0, bloq: 120 },
+  91: { total: 100, asf: 0, conc: 0, bloq: 100 },
+  92: { total: 300, asf: 300, conc: 0, bloq: 0 },
+  93: { total: 100, asf: 0, conc: 0, bloq: 100 },
+  94: { total: 150, asf: 0, conc: 0, bloq: 150 },
+  95: { total: 250, asf: 0, conc: 0, bloq: 250 },
+  96: { total: 200, asf: 0, conc: 0, bloq: 200 },
+  97: { total: 220, asf: 0, conc: 0, bloq: 220 },
+  98: { total: 350, asf: 0, conc: 0, bloq: 350 },
+  99: { total: 400, asf: 0, conc: 0, bloq: 400 },
+  100: { total: 250, asf: 250, conc: 0, bloq: 0 },
+  101: { total: 250, asf: 250, conc: 0, bloq: 0 },
+  102: { total: 250, asf: 250, conc: 0, bloq: 0 },
+  103: { total: 250, asf: 250, conc: 0, bloq: 0 },
+  104: { total: 250, asf: 250, conc: 0, bloq: 0 },
+  105: { total: 250, asf: 250, conc: 0, bloq: 0 },
+  106: { total: 700, asf: 700, conc: 0, bloq: 0 },
+  107: { total: 0, asf: 0, conc: 0, bloq: 0 },
+  };
+
+  function buildServico(v) {
+    const parts = [];
+    if ((v.asf || 0) > 0) parts.push("Pavimentação Asfáltica");
+    if ((v.conc || 0) > 0) parts.push("Pavimentação em Concreto");
+    if ((v.bloq || 0) > 0) parts.push("Pavimentação em Bloquete");
+    return parts.length ? parts.join(", ") : null;
+  }
+
+  const arr = Array.isArray(window.DEMANDAS) ? window.DEMANDAS : [];
+  for (const d of arr) {
+    if (!d || d.item == null) continue;
+    const v = LEN_BY_ITEM[Number(d.item)];
+    if (!v) continue;
+
+    // mantém o total do seu arquivo, mas completa se estiver vazio
+    if (d.extensao_total_m == null || d.extensao_total_m === 0) {
+      d.extensao_total_m = v.total || d.extensao_total_m;
+    }
+
+    // campos novos (não quebram seu sistema se ele ignorar)
+    d.extensao_asfaltica_m = v.asf || 0;
+    d.extensao_concreto_m = v.conc || 0;
+    d.extensao_bloquete_m = v.bloq || 0;
+
+    // AQUI É O PRINCIPAL: atualiza o "servico" conforme a tabela
+    d.servico = buildServico(v);
+  }
+
+  // garante que fica global do jeito certo
+  window.DEMANDAS = arr;
+})();
