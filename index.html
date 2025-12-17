@@ -233,13 +233,6 @@
   function norm(s){ return (s ?? '').toString().trim(); }
   function lower(s){ return norm(s).toLowerCase(); }
 
-  function normalizeServico(s){
-    const t = norm(s);
-    if(!t) return '—';
-    const first = t.split(',')[0].trim();
-    return first || '—';
-  }
-
   function groupCount(arr, getKey){
     const m = new Map();
     for(const o of arr){
@@ -347,17 +340,7 @@
       toolbox:{ show:false }
     }, true);
 
-    // Distribuição por Pavimentação (m)
-    const BLOQUETE_M = {
-      10: 90, 11: 250,
-      52: 140, 55: 140,
-      67: 400, 68: 500, 69: 250, 70: 250, 71: 200,
-      77: 150, 78: 240, 79: 270, 80: 100, 81: 70,
-      83: 170, 84: 180, 85: 350
-    };
-    const CONCRETO_M = { 1: 350 };
-    const ASFALTICA_OVERRIDE_M = { 50: 600, 51: 500 };
-
+    // ✅ Distribuição por Serviço (usa o texto REAL do campo "servico")
     function num(v){
       if(v == null) return 0;
       if(typeof v === 'number') return Number.isFinite(v) ? v : 0;
@@ -373,31 +356,54 @@
       return (v/1000).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' km';
     }
 
+    function keyText(v){
+      return (v ?? '')
+        .toString()
+        .trim()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g,''); // remove acentos
+    }
+
+    function tipoServico(d){
+      const s = keyText(d?.servico);
+      if(!s) return 'Não informado';
+
+      if (s.includes('bloquete')) return 'Bloquete';
+      if (s.includes('concreto')) return 'Concreto';
+
+      // asfalto / recape / pavimentação (inclui variações/typos tipo "pavimentçao/pavimentcao")
+      if (s.includes('asfalt') || s.includes('recape') || s.includes('pavimentac')) return 'Asfáltica';
+
+      return 'Não informado';
+    }
+
     let totalM = 0, asfM = 0, concM = 0, bloqM = 0, naoInfM = 0;
 
     for(const d of data){
-      const item = Number(d.item);
       const t = num(d.extensao_total_m);
-      const conc = num(d.ext_concreto_m ?? CONCRETO_M[item] ?? 0);
-      const bloq = num(d.ext_bloquete_m ?? BLOQUETE_M[item] ?? 0);
+      const tipo = tipoServico(d);
 
-      let asf = 0;
-      if(d.ext_asfaltica_m != null) asf = num(d.ext_asfaltica_m);
-      else if(ASFALTICA_OVERRIDE_M[item] != null) asf = num(ASFALTICA_OVERRIDE_M[item]);
-      else if(bloq > 0 || conc > 0) asf = 0;
-      else asf = t;
+      totalM += t;
 
-      const resto = Math.max(0, t - (asf + conc + bloq));
-
-      totalM += t; asfM += asf; concM += conc; bloqM += bloq; naoInfM += resto;
+      if (tipo === 'Asfáltica') asfM += t;
+      else if (tipo === 'Concreto') concM += t;
+      else if (tipo === 'Bloquete') bloqM += t;
+      else naoInfM += t;
     }
 
-    const pieData = [
+    let pieData = [
       { name:'Asfáltica', value: Math.round(asfM) },
       { name:'Concreto',  value: Math.round(concM) },
       { name:'Bloquete',  value: Math.round(bloqM) },
       { name:'Não informado', value: Math.round(naoInfM) }
     ].filter(x => x.value > 0);
+
+    // se tudo for 0, evita gráfico vazio
+    if (pieData.length === 0) {
+      pieData = [{ name: 'Não informado', value: 1 }];
+      totalM = 0;
+    }
 
     chServ.setOption({
       backgroundColor:'transparent',
@@ -441,7 +447,6 @@
       const sel = $('filterRegiao');
       if(!sel) return;
       sel.value = p.name === '—' ? '' : p.name;
-      // ao filtrar por região, limpa foco
       window.__obratChartsFocusItem = null;
       sel.dispatchEvent(new Event('change', { bubbles:true }));
       updateCharts();
